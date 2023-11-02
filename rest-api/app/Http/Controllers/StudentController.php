@@ -37,4 +37,27 @@ class StudentController extends Controller
 
         return response()->json($data, 201);
     }
+
+    public function update(Request $request, $id){
+        $student = Student::find($id);
+            $student->update($request->all());
+
+        $data =[
+            "message" => "Student is updated successfully",
+            "data" => $student,
+        ];
+
+        return response()->json($data, 200);
+    }
+
+    public function destroy($id){
+        $student = Student::find($id);
+            $student->delete();
+            $data = [
+                "massage" => "student is deleted successfully",
+                "dataDeleted" => $student,
+            ];
+
+            return response()->json($data, 200);
+    }  
 }
