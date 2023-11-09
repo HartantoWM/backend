@@ -9,6 +9,17 @@ class StudentController extends Controller
 {
     public function index()
     {
+
+        //mendapatkan semua data student
+        $students = Student::all();
+
+        //jika data kosong maka kirim status code 204
+        if ($students->isEmpty()) {
+            $data = [
+                "message" => "Resource is empty"
+            ];
+        }
+
         $student = Student::all();
 
         $data = [
@@ -21,6 +32,16 @@ class StudentController extends Controller
 
     public function store(Request $request)
     {
+
+        // validasi data request
+        $request->validate([
+            "nama" => "required",
+            "nim" => "required",
+            "email" => "required|email",
+            "jurusan" => "required"
+        ]);
+
+
         $input = [
             'nama' => $request->nama,
             'nim' => $request->nim,
@@ -38,7 +59,20 @@ class StudentController extends Controller
         return response()->json($data, 201);
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
+        $student = Student::find($id);
+
+        if(!$student){
+            $data = [
+                "message" => "Data Not Found"
+            ];
+
+            return response ()->json($data, 404);
+
+        }
+
+      
         $student = Student::find($id);
             $student->update($request->all());
 
