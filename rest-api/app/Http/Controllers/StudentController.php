@@ -49,7 +49,15 @@ class StudentController extends Controller
             'jurusan' => $request-> jurusan
         ];
 
-        $student = Student::create($input);
+        //membuat validasi
+        $validatedData = $request->validate([
+            "nama" => "required",
+            "nim" => "numeric|required",
+            "email" => "email|required",
+            "jurusan" => "required"
+        ]);
+
+        $student = Student::create($validatedData);
 
         $data = [
             'message' => 'Data berhasil ditambahkan',

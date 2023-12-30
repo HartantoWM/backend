@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnimalController;
 use App\Http\Controllers\StudentController;
-
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,6 +34,10 @@ Route::delete('/animals', [AnimalController::class, 'destroy']);
 
 
 //membuat route student
+
+Route::middleware('auth:sanctum')->group ( function () {
+
+
 Route::get("/students", [StudentController::class, "index"]);
 //method post
 Route::post('/students', [StudentController::class, 'store']);
@@ -41,3 +45,8 @@ Route::post('/students', [StudentController::class, 'store']);
 Route::put('/students/{id}', [StudentController::class, 'update']);
 //method delete
 Route::delete('/students/{id}', [StudentController::class, 'destroy']);
+
+});
+
+Route::post("/login", [AuthController::class, 'login']);
+Route::post("/register", [AuthController::class, 'register']);
